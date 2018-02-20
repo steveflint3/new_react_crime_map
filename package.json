@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
-    "react-scripts": "1.0.17",
+    "babel-preset-stage-2": "^6.24.1",
     "colormap": "^2.3.0",
     "ol": "^4.5.0",
     "ol-hashed": "^1.0.2",
     "ol-mapbox-style": "^2.7.2",
-    "openlayers": "^4.4.2"
+    "openlayers": "^4.4.2",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-scripts": "1.0.17"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

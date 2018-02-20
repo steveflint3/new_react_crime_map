@@ -12,3 +12,7 @@
     background: lightgray;
     border: 1px solid #003c88;
 }
+
+#districtName, #titleTop {
+  text-align: center;
+}

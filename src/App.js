@@ -10,9 +10,7 @@ class App extends Component {
       data: [],
       ready: false,
       longitude: -76.6122,
-      latitude: 39.2904,
-      longArrayState: [],
-      latArrayState: []
+      latitude: 39.2904
     };
     this.getData = this.getData.bind(this)
   }
@@ -34,16 +32,17 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.data === 0) {
-      return (<h1>
-        LOADING!!!!!
-      </h1>)
-    } else {
-      return (<div>
-        <MurderMap longitude={this.state.longitude} latitude={this.state.latitude} data={this.state.data}/>
-      </div>);
+    // if (this.state.data.length === 0) {
+    //   return (<h1>
+    //     LOADING!!!!!
+    //   </h1>)
+    // } else {
+      return (
+        <div>
+          <MurderMap longitude={this.state.longitude} latitude={this.state.latitude} data={this.state.data}/>
+        </div>
+    );
     }
   }
-}
 
 export default App;
