@@ -27,6 +27,7 @@ import Vector from 'ol/layer/vector';
 import Polygon from 'ol/geom/polygon';
 import Text from 'ol/style/text';
 import Zoom from 'ol/control/zoom';
+import Heatmap from 'ol/layer/heatmap';
 // import Source from 'ol/source/source';
 // import VectorTileLayer from 'ol/layer/vectortile';
 // import VectorTileSource from 'ol/source/vectortile';
@@ -78,12 +79,29 @@ class MurderMap extends Component {
     return vector
   }
 
+  // initHeatMapLayer = () => {
+  //   console.log("Here is the heatmap", ol.layer.Heatmap)
+  //   const heatMapLayer = new Heatmap({
+  //     // source: new GeoJSON({
+  //     //   url: 'https://data.baltimorecity.gov/api/views/h3fx-54q3/rows.geojson',
+  //     //   projection: 'EPSG:3857'
+  //     // }),
+  //     source: new VectorSource({format: new GeoJSON(), url: 'https://data.baltimorecity.gov/api/views/h3fx-54q3/rows.geojson'}),
+  //             // opacity: 0.9
+  //         });
+  //         console.log("Here is the heatmap layer", ol.layer.Heatmap)
+  //         return heatMapLayer
+  //       }
+
   initMap = (obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState) => {
     console.log("init map");
     // let dataArrayStateIT = [];
-    const position = new VectorSource();
+    const position = new VectorSource()
     const layer = this.initLayer()
     const vector = this.initVector(position)
+    // const heatMapLayer = this.initHeatMapLayer()
+    // console.log("Right after heat map init", heatMapLayer)
+
     this.createMap(layer, vector, obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState, position);
     console.log("AAAAA", loopVar);
     // for (let i = 0; i < loopVar.length; i++) {
@@ -133,6 +151,7 @@ class MurderMap extends Component {
     });
 
     // console.trace();
+
     const map = new Map({
       target: 'map-container',
       layers: [new TileLayer({
@@ -154,10 +173,20 @@ class MurderMap extends Component {
     //   element: map,
     //   style:
     // })
+ //    const heatMapLayer = new Heatmap({
+ //    // const data = new VectorSource();
+ // //    var pointFeature = new ol.Feature({
+ // //     geometry: lonLat,
+ // //     weight: 20 // e.g. temperature
+ // // });
+ //       source: new VectorSource(),
+ //       radius: 50
+ //   });
 
     map.addOverlay(overlay)
     map.addLayer(lay)
     map.addLayer(vec)
+    // map.addLayer(heatMapLayer)
 
     ////////////Overlay added with popupfeatures in createMap function/
     var clicked;

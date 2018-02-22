@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import MurderMap from './MurderMap/MurderMap.js';
 import './App.css';
 // import {data} from './BaltimoreDistrict.json'
+// import Heatmap from '/Users/steve/Documents/projects/new_react_crime_map/src/Heatmap/Heatmap.js';
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +32,10 @@ class App extends Component {
     return fetch('https://data.baltimorecity.gov/resource/4ih5-d5d5.json?description=HOMICIDE').then(response => response.json()).catch(err => console.log(err))
   }
 
+  searchButton = () => {
+    window.location.reload();
+  }
+
   render() {
     // if (this.state.data.length === 0) {
     //   return (<h1>
@@ -39,7 +44,7 @@ class App extends Component {
     // } else {
       return (
         <div>
-          <MurderMap longitude={this.state.longitude} latitude={this.state.latitude} data={this.state.data}/>
+        <MurderMap longitude={this.state.longitude} latitude={this.state.latitude} data={this.state.data}/>
         </div>
     );
     }

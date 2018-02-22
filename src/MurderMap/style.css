@@ -16,3 +16,9 @@
 #districtName, #titleTop {
   text-align: center;
 }
+
+#searchButton {
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
