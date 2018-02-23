@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import MurderMap from './MurderMap/MurderMap.js';
+// import MurderMap from './MurderMap/MurderMap.js';
 import './App.css';
 // import {data} from './BaltimoreDistrict.json'
-// import Heatmap from '/Users/steve/Documents/projects/new_react_crime_map/src/Heatmap/Heatmap.js';
+import Heatmap from '/Users/steve/Documents/projects/new_react_crime_map/src/Heatmap/Heatmap.js';
 
 class App extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class App extends Component {
     // } else {
       return (
         <div>
-        <MurderMap longitude={this.state.longitude} latitude={this.state.latitude} data={this.state.data}/>
+        <Heatmap data={this.state.data} />
         </div>
     );
     }
