@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import 'ol/ol.css';
 import GeoJSON from 'ol/format/geojson';
 import Map from 'ol/map';
-// import Vector from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import View from 'ol/view';
 import ol from 'openlayers';
@@ -15,10 +14,8 @@ import Stroke from 'ol/style/stroke';
 import Fill from 'ol/style/fill';
 import IconStyle from 'ol/style/icon';
 import proj from 'ol/proj';
-// import MVT from 'ol/format/mvt';
 import interaction from 'ol/interaction';
 import Select from 'ol/interaction/select';
-// import condition from 'ol/events/condition';
 import style from './style.css';
 import Overlay from 'ol/overlay';
 import coordinate from 'ol/coordinate';
@@ -28,10 +25,7 @@ import Polygon from 'ol/geom/polygon';
 import Text from 'ol/style/text';
 import Zoom from 'ol/control/zoom';
 import Heatmap from 'ol/layer/heatmap';
-// import Source from 'ol/source/source';
-// import VectorTileLayer from 'ol/layer/vectortile';
-// import VectorTileSource from 'ol/source/vectortile';
-// import {data} from './BaltimoreDistrict.json'
+import VectorLayer from 'ol/layer/vector';
 
 class MurderMap extends Component {
   constructor(props) {
@@ -42,6 +36,7 @@ class MurderMap extends Component {
     };
   }
 
+//check to see if data is loaded before component functionality
   loadMap = () => {
     if (this.props.data.length === 0) {
       return (console.log("LOADING!!!"))
@@ -49,14 +44,12 @@ class MurderMap extends Component {
       this.buildLongLatArrays();
     }
   }
-
+//Baltimore City GeoJSON layer defined/declared below
   initLayer = () => {
     console.log("init layer");
     const url = 'https://data.baltimorecity.gov/api/views/h3fx-54q3/rows.geojson';
     const layer = new Vector({
-      //get into source below and getFeaturesAtCoordinate
       source: new VectorSource({format: new GeoJSON(), url: url}),
-      ////////////////////
       style: new Style({
         stroke: new Stroke({
           color: [
@@ -69,7 +62,7 @@ class MurderMap extends Component {
     })
     return layer;
   }
-
+//Map Marker PNG Layer defined/declared
   initVector = (position) => {
     console.log("initVector");
     const vector = new Vector({source: position});
@@ -78,54 +71,31 @@ class MurderMap extends Component {
     }));
     return vector
   }
-
-  // initHeatMapLayer = () => {
-  //   console.log("Here is the heatmap", ol.layer.Heatmap)
-  //   const heatMapLayer = new Heatmap({
-  //     // source: new GeoJSON({
-  //     //   url: 'https://data.baltimorecity.gov/api/views/h3fx-54q3/rows.geojson',
-  //     //   projection: 'EPSG:3857'
-  //     // }),
-  //     source: new VectorSource({format: new GeoJSON(), url: 'https://data.baltimorecity.gov/api/views/h3fx-54q3/rows.geojson'}),
-  //             // opacity: 0.9
-  //         });
-  //         console.log("Here is the heatmap layer", ol.layer.Heatmap)
-  //         return heatMapLayer
-  //       }
-
+//Heat Map Layer defined.declared, passed in loopVar for coordinates
+  initHeatMapLayer = (loopVar) => {
+    const marker = [];
+    console.log("init layer");
+    console.log("init loopvar loopvar loopvar!!!!!!!", loopVar)
+    for (let i = 0; i < loopVar.length; i++) {
+      const point = new Point(loopVar[i]);
+      const pointMarkerFeature = new Feature({geometry: point})
+      marker.push(pointMarkerFeature);
+    }
+    const heatMapLayer = new Heatmap({
+      source: new VectorSource({features: marker}),
+    })
+    return heatMapLayer
+  }
+//Variables for createMap passed to init map
+//Position, layer, and vector variables defined (Layer and vector funcs called)
+//CreateMap is called with necessary variables passed
   initMap = (obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState) => {
     console.log("init map");
-    // let dataArrayStateIT = [];
-    const position = new VectorSource()
+    const position = new VectorSource();
     const layer = this.initLayer()
     const vector = this.initVector(position)
-    // const heatMapLayer = this.initHeatMapLayer()
-    // console.log("Right after heat map init", heatMapLayer)
-
-    this.createMap(layer, vector, obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState, position);
+    this.createMap(this.initHeatMapLayer(loopVar), layer, vector, obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState, position);
     console.log("AAAAA", loopVar);
-    // for (let i = 0; i < loopVar.length; i++) {
-    //   const point = new Point(loopVar[i]);
-    //   const desc = descArrayState[i];
-    //   const crimeDate = dateArrayState[i];
-    //   const dist = distArrayState[i];
-    //   const loca = locationArrayState[i];
-    //   const innyOutty = inAndOutArrayState[i];
-    //   const weap = weaponArrayState[i];
-    //   let feature = new Feature({
-    //     geometry: point,
-    //     crimeDate: crimeDate,
-    //     desc: desc,
-    //     dist: dist,
-    //     loca: loca,
-    //     innyOutty: innyOutty,
-    //     weap: weap
-    //   });
-    //       position.addFeature(feature);
-    // }
-    //////trying to return feature, the iterated feature, so that you can pass it to a function you can define in global space and then call in the click function where the zoom function is
-    //position.addFeature originally went here
-    // return this.feature;
   }
 
   mapLatLongCoordCollection = (array) => {
@@ -134,7 +104,7 @@ class MurderMap extends Component {
     })
   }
 
-  createMap = (lay, vec, obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState, position) => {
+  createMap = (initHeatMapLayer, lay, vec, obj, loopVar, dateArrayState, descArrayState, distArrayState, locationArrayState, inAndOutArrayState, weaponArrayState, position) => {
     console.log("creating map");
 
     let selectInteraction = new Select({
@@ -151,12 +121,14 @@ class MurderMap extends Component {
     });
 
     // console.trace();
-
     const map = new Map({
       target: 'map-container',
-      layers: [new TileLayer({
+      layers: [
+        //Below the base stamen layer is set and added to map
+        new TileLayer({
           source: new XYZSource({url: 'http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg'})
-        })],
+        })
+      ],
       view: new View({
         center: proj.fromLonLat([this.props.longitude, this.props.latitude]),
         zoom: 12.3
@@ -173,20 +145,12 @@ class MurderMap extends Component {
     //   element: map,
     //   style:
     // })
- //    const heatMapLayer = new Heatmap({
- //    // const data = new VectorSource();
- // //    var pointFeature = new ol.Feature({
- // //     geometry: lonLat,
- // //     weight: 20 // e.g. temperature
- // // });
- //       source: new VectorSource(),
- //       radius: 50
- //   });
 
     map.addOverlay(overlay)
     map.addLayer(lay)
     map.addLayer(vec)
-    // map.addLayer(heatMapLayer)
+    map.addLayer(initHeatMapLayer)
+
 
     ////////////Overlay added with popupfeatures in createMap function/
     var clicked;
@@ -326,9 +290,6 @@ class MurderMap extends Component {
           const currentNeighborhood = lay.getSource().getFeaturesAtCoordinate(feature.values_.geometry.flatCoordinates)[0].values_.nbrdesc.split(' ').join('_').split('-').join('_').toLowerCase()
           if(neighborhoodClicked === currentNeighborhood){
           position.addFeature(feature);
-          //////////Remember to look over the bottom two values...
-          // console.log("Here is the current neighborhood", currentNeighborhood)
-          // console.log("Here is NEIGHBORHOOD CLICKED", neighborhoodClicked)
       }
       }
 
@@ -395,8 +356,6 @@ class MurderMap extends Component {
         parseFloat(latArrayState[i])
       ]));
     }
-    const layer = this.initLayer();
-    const vector = this.initVector(position);
     return coorArr;
   }
 

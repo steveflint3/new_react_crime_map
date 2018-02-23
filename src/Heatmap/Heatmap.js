@@ -39,7 +39,7 @@ import Heatmap from 'ol/layer/heatmap';
 //   Layers, Util    objects
 // } from "react-openlayers";
 
-class MurderMap extends Component {
+class HeatMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,64 +47,6 @@ class MurderMap extends Component {
       wasClicked: false
     };
   }
-
-  // loadMap = () => {
-  //   if (this.props.data.length === 0) {
-  //     return (console.log("LOADING!!!"))
-  //   } else {
-  //     this.buildLongLatArrays();
-  //   }
-  // }
-  //
-  // buildLongLatArrays = () => {
-  //
-  //   console.log("iterate");
-  //   let longArray = [];
-  //   let latArray = [];
-  //
-  //   for (let i = 0; i < this.props.data.length; i++) {
-  //
-  //     if (this.props.data[i].hasOwnProperty("location_1")) {
-  //       longArray.push(this.props.data[i].longitude);
-  //       latArray.push(this.props.data[i].latitude);
-  //     }
-  //   }
-  //   this.processLonLat({
-  //     longArrayState: longArray,
-  //     latArrayState: latArray
-  //   });
-  // }
-  //
-  // processLonLat = (obj) => {
-  //   console.log("processing for loop");
-  //
-  //   const loopVar = this.buildCoordinateArrayFromLatLong(obj.longArrayState, obj.latArrayState);
-  //   this.initMap(obj, loopVar, obj.dateArrayState, obj.descArrayState, obj.distArrayState, obj.locationArrayState, obj.inAndOutArrayState, obj.weaponArrayState);
-  // }
-  //
-  // buildCoordinateArrayFromLatLong = (longArrayState, latArrayState) => {
-  //    console.log("LONG array State ===", longArrayState, latArrayState);
-  //   console.log("doing for loop");
-  //   let coorArr = []
-  //   const position = new VectorSource();
-  //
-  //   for (let i = 0; i < longArrayState.length; i++) {
-  //     coorArr.push(proj.fromLonLat([
-  //       parseFloat(longArrayState[i]),
-  //       parseFloat(latArrayState[i])
-  //     ]));
-  //   }
-  //   const layer = this.initLayer();
-  //   const vector = this.initVector(position);
-  //   return coorArr;
-  // }
-  // initHeatMapLayer = () => {
-  //   var heatmapLayer = new Heatmap({
-  //     source: new GeoJSON({url: 'https://raw.githubusercontent.com/acanimal/thebookofopenlayers3/master/app/data/world_cities.json', projection: 'EPSG:3857'}),
-  //     opacity: 0.9
-  //   });
-  //   return heatmapLayer
-  // }
 
   loadMap = () => {
     if (this.props.data.length === 0) {
@@ -173,6 +115,7 @@ class MurderMap extends Component {
   render() {
     console.log("Gimme them props mannnn", this.props.data)
     console.log("This is myData[0] state", this.state.myData)
+    // console.log("HEAT lON LAT!!!!=>>>>>", this.props.heatLonLat)
     return (<div>
       <div>Hello</div>
       <div id="map" onLoad={this.loadMap()}>
@@ -181,4 +124,4 @@ class MurderMap extends Component {
   }
 }
 
-export default MurderMap;
+export default HeatMap;
